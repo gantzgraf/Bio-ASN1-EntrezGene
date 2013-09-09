@@ -1,0 +1,17 @@
+Changes
+MANIFEST
+README
+lib/Bio/ASN1/EntrezGene.pm
+lib/Bio/ASN1/EntrezGene/Indexer.pm
+lib/Bio/ASN1/Sequence.pm
+lib/Bio/ASN1/Sequence/Indexer.pm
+Makefile.PL
+examples/regex_parser_test.pl
+examples/indexer_test.pl
+examples/parse_entrez_gene_example.pl
+examples/parse_sequence_example.pl
+t/input.asn
+t/input1.asn
+t/testparser.t
+t/testindexer.t
+t/seq.asn
