@@ -79,7 +79,7 @@ Those other parsers etc. are included in V1.05 download.
 
 =head1 AUTHOR
 
-Dr. Mingyi Liu <mingyi.liu@gpc-biotech.com>
+Dr. Mingyi Liu <mingyiliu@gmail.com>
 
 =head1 COPYRIGHT
 

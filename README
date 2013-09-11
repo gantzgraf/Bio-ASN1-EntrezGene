@@ -9,7 +9,7 @@ These modules have quite high performance and error reporting capabilities.
 Additionally, one could dump the data structure generated from extracted
 NCBI object records into XML extremely easily using XML::Simple's XMLout().
 
-Written and maintained by Dr. Mingyi Liu <mingyi.liu@gpc-biotech.com>.
+Written and maintained by Dr. Mingyi Liu <mingyiliu@gmail.com>.
 Copyright (c) 2005 Mingyi Liu, GPC Biotech, Altana Research Institute.
 All rights reserved.
 

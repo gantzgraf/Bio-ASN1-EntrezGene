@@ -44,7 +44,7 @@ Please check out perldoc for Bio::ASN1::EntrezGene for more info.
 
 =head1 AUTHOR
 
-Dr. Mingyi Liu <mingyi.liu@gpc-biotech.com>
+Dr. Mingyi Liu <mingyiliu@gmail.com>
 
 =head1 COPYRIGHT
 
