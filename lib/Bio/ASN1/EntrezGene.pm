@@ -270,7 +270,7 @@ sub next_seq
   {
     chomp;
     next unless /\S/;
-    my $tmp = (/^\s*Entrezgene ::= ({.*)/si)? $1 : "{" . $_; # get rid of the 'Entrezgene ::= ' at the beginning of Entrez Gene record
+    my $tmp = (/^\s*Entrezgene(-Set)? ::= ({.*)/si)? $2 : "{" . $_; # get rid of the 'Entrezgene ::= ' at the beginning of Entrez Gene record
     return $self->parse($tmp, $compact, 1); # 1 species no resetting line number
   }
 }
