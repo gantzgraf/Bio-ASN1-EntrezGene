@@ -1,5 +1,7 @@
 #!/usr/bin/env perl -w
 use strict;
+use warnings;
+use File::Spec;
 use Test::More tests => 10;
 
 my ($nogene, $noseq);

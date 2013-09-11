@@ -1,16 +1,25 @@
 #!/usr/bin/env perl -w
 use strict;
-use Test::More tests => 11;
+use Test::More tests => 6;
+
+sub check_dependency {
+    my $class = shift;
+    eval "require $class; 1";
+    if ($@) {
+        return
+    }
+    1
+}
 
 my ($noindex, $noabseq, $nogene, $noseq, $noseqindex);
 
 BEGIN {
   diag("\n\nTest indexers (Bio::ASN1::EntrezGene::Indexer, Bio::ASN1::Sequence::Indexer)\nIndexing and retrieval:\n");
-  use_ok('Bio::ASN1::EntrezGene') || $nogene++;
-  use_ok('Bio::Index::AbstractSeq') || $noabseq++;
-  use_ok('Bio::ASN1::EntrezGene::Indexer') || $noindex++;
-  use_ok('Bio::ASN1::Sequence') || $noseq++;
-  use_ok('Bio::ASN1::Sequence::Indexer') || $noseqindex++;
+  check_dependency('Bio::ASN1::EntrezGene') || $nogene++;
+  check_dependency('Bio::Index::AbstractSeq') || $noabseq++;
+  check_dependency('Bio::ASN1::EntrezGene::Indexer') || $noindex++;
+  check_dependency('Bio::ASN1::Sequence') || $noseq++;
+  check_dependency('Bio::ASN1::Sequence::Indexer') || $noseqindex++;
 }
 diag("\n\nFirst testing gene indexer:\n");
 if(!$nogene)
@@ -74,4 +83,5 @@ else
 {
   diag("\nThere's some problem with the installation of Bio::ASN1::Sequence!\nTry install again using:\n\tperl Makefile.PL\n\tmake\nQuitting now");
 }
+
 
