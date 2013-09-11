@@ -1,6 +1,15 @@
-=head1 NAME
+package Bio::ASN1::EntrezGene;
+use utf8;
+use strict;
+use warnings;
+use Carp qw(carp croak);
 
-Bio::ASN1::EntrezGene - Regular expression-based Perl Parser for NCBI Entrez Gene.
+# ABSTRACT: Regular expression-based Perl Parser for NCBI Entrez Gene.
+# AUTHOR:   Dr. Mingyi Liu <mingyiliu@gmail.com>
+# OWNER:    2005 Mingyi Liu
+# OWNER:    2005 GPC Biotech AG
+# OWNER:    2005 Altana Research Institute
+# LICENSE:  Perl_5
 
 =head1 SYNOPSIS
 
@@ -11,7 +20,7 @@ Bio::ASN1::EntrezGene - Regular expression-based Perl Parser for NCBI Entrez Gen
   {
     # extract data from $result, or Dumpvalue->new->dumpValue($result);
   }
-  
+
   # a new way to get the $result data hash for a particular gene id:
   use Bio::ASN1::EntrezGene::Indexer;
   my $inx = Bio::ASN1::EntrezGene::Indexer->new(-filename => 'entrezgene.idx');
@@ -58,75 +67,49 @@ file on one 2.4 GHz Intel Xeon processor.  The addition of validation and error
 reporting in 1.03 and handling of new Entrez Gene format slowed the parser down
 about 40%.
 
-Since V1.07, this package also included an indexer that runs pretty fast (it 
-takes 21 seconds for the indexer to index the human genome on the same 
-processor).  Therefore the combination of the modules would allow user to 
+Since V1.07, this package also included an indexer that runs pretty fast (it
+takes 21 seconds for the indexer to index the human genome on the same
+processor).  Therefore the combination of the modules would allow user to
 retrieve and parse arbitrary records.
 
 =head1 SEE ALSO
 
-The parse_entrez_gene_example.pl script included in this package (please 
+The parse_entrez_gene_example.pl script included in this package (please
 see the Bio-ASN1-EntrezGene-x.xx/examples directory) is a very
 important and near-complete demo on using this module to extract all data
-items from Entrez Gene records.  Do check it out because in fact, this 
-script took me about 3-4 times more time to make for my project than the 
+items from Entrez Gene records.  Do check it out because in fact, this
+script took me about 3-4 times more time to make for my project than the
 parser V1.0 itself. Note that the example script was edited to leave
 out stuff specific to my internal project.
 
-For details on various parsers I generated for Entrez Gene, example scripts that 
+For details on various parsers I generated for Entrez Gene, example scripts that
 uses/benchmarks the modules, please see L<http://sourceforge.net/projects/egparser/>.
 Those other parsers etc. are included in V1.05 download.
 
-=head1 AUTHOR
-
-Dr. Mingyi Liu <mingyiliu@gmail.com>
-
-=head1 COPYRIGHT
-
-The Bio::ASN1::EntrezGene module and its related modules and scripts 
-are copyright (c) 2005 Mingyi Liu, GPC Biotech AG and Altana Research 
-Institute. All rights reserved. I created these modules when working 
-on a collaboration project between these two companies. Therefore a 
-special thanks for the two companies to allow the release of the code 
-into public domain.
-
-You may use and distribute them under the terms of the Perl itself or
-GPL (L<http://www.gnu.org/copyleft/gpl.html>).
-
 =head1 CITATION
 
-Liu, M and Grigoriev, A (2005) "Fast Parsers for Entrez Gene" 
-Bioinformatics. In press
+Liu, Mingyi, and Andrei Grigoriev. "Fast parsers for Entrez Gene."
+Bioinformatics 21, no. 14 (2005): 3189-3190.
 
 =head1 OPERATION SYSTEMS SUPPORTED
 
 Any OS that Perl runs on.
 
-=head1 METHODS
-
 =cut
 
-package Bio::ASN1::EntrezGene;
-
-use strict;
-use Carp qw(carp croak);
-use vars qw ($VERSION);
-
-$VERSION = '1.10';
-
-=head2 new
+=method new
 
   Parameters: maxerrstr => 20 (optional) - maximum number of characters after
                 offending element, used by error reporting, default is 20
-              file or -file => $filename (optional) - name of the file to be 
+              file or -file => $filename (optional) - name of the file to be
                 parsed. call next_seq to parse!
-              fh or -fh => $filehandle (optional) - handle of the file to be 
-                parsed. 
+              fh or -fh => $filehandle (optional) - handle of the file to be
+                parsed.
   Example:    my $parser = Bio::ASN1::EntrezGene->new();
   Function:   Instantiate a parser object
   Returns:    Object reference
   Notes:      Setting file or fh will reset line numbers etc. that are used
-                for error reporting purposes, and seeking on file handle would 
+                for error reporting purposes, and seeking on file handle would
                 mess up linenumbers!
 
 =cut
@@ -142,7 +125,7 @@ sub new
   return $self;
 }
 
-=head2 maxerrstr
+=attr maxerrstr
 
   Parameters: $maxerrstr (optional) - maximum number of characters after
                 offending element, used by error reporting, default is 20
@@ -161,11 +144,11 @@ sub maxerrstr
 }
 
 
-=head2 parse
+=method parse
 
   Parameters: $string that contains Entrez Gene record,
               $trimopt (optional) that specifies how the data structure
-                returned should be trimmed. 2 is recommended and 
+                returned should be trimmed. 2 is recommended and
                 default
               $noreset (optional) that species that line number should not
                 be reset
@@ -212,7 +195,7 @@ sub parse
   return $result;
 }
 
-=head2 input_file
+=attr input_file
 
   Parameters: $filename for file that contains Entrez Gene record(s)
   Example:    $parser->input_file($filename);
@@ -239,7 +222,7 @@ sub input_file
   $self->{linenumber} = 0; # reset line number
 }
 
-=head2 next_seq
+=method next_seq
 
   Parameters: $trimopt (optional) that specifies how the data structure
                 returned should be trimmed. option 2 is recommended and
@@ -275,8 +258,13 @@ sub next_seq
   }
 }
 
-# NCBI's Apr 05, 2005 format change forced much usage of lookahead, which would for
-# sure slows parser down.  But can't code efficiently without it.
+=internal _parse
+
+NCBI's Apr 05, 2005 format change forced much usage of lookahead, which would for
+sure slows parser down.  But can't code efficiently without it.
+
+=cut
+
 sub _parse
 {
   my ($self, $flag) = @_;
@@ -408,7 +396,7 @@ sub _parse
 # so now  $hash->{comments}->[0]->[0]->[0]->{source}->[0]->[0]->[0]->{src}->[0]->[0]->{tag}->[0]->{id}
 # becomes $hash->{comments}->[0]->{source}->{src}->{tag}->{id}
 # this may create problem as array might suddenly change to hash depending on whether it
-# has multiple elements or not.  So set $flag to 2 or 0/undef would disallow trimming that 
+# has multiple elements or not.  So set $flag to 2 or 0/undef would disallow trimming that
 # would lead to data type change, thus resulting in data structure like:
 #    'comments' => ARRAY(0x88617e8)
 #       0  HASH(0x889d578)
@@ -423,7 +411,7 @@ sub _parse
 #                            'id' => 5
 # still not the safest, but saves some hassle writing code
 
-=head2 trimdata
+=method trimdata
 
   Parameters: $hashref or $arrayref
               $trimflag (optional, see Notes)
@@ -483,14 +471,14 @@ sub trimdata
   }
 }
 
-=head2 fh
+=method fh
 
   Parameters: $filehandle (optional)
   Example:    trimdata($datahash); # using the default flag
   Function:   getter/setter for file handle
   Returns:    file handle for current file being parsed.
   Notes:      Use with care!
-              Line number report would not be corresponding to file's line 
+              Line number report would not be corresponding to file's line
                 number if seek operation is performed on the file handle!
 
 =cut
@@ -506,7 +494,7 @@ sub fh
   return $self->{fh};
 }
 
-=head2 rawdata
+=method rawdata
 
   Parameters: none
   Example:    my $data = $parser->rawdata();
@@ -514,7 +502,7 @@ sub fh
   Returns:    a string containing the ASN1-formatted Entrez Gene record
   Notes:      Must first parse a record then call this function!
               Could be useful in interpreting line number value in error
-                report (if user did a seek on file handle right before parsing 
+                report (if user did a seek on file handle right before parsing
                 call)
 
 =cut

@@ -1,3 +1,10 @@
+Revision history for Bio-ASN1-Entrezgene
+
+{{$NEXT}}
+  * Bio::ASN1::EntrezGene is now able to parse EntrezGene-set in which case
+    next_seq() will return the next set of sequences with each sequence as
+    an element in the array ref instead of an array ref with a single element.
+
 version 1.10: Important update if you see segmentation fault when running the
               parser - so far I only saw it happen on Perl 5.8 (Perl 5.10 is 
               fine) due to an exceedingly long (and invalid) URL in one 

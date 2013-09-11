@@ -1,6 +1,18 @@
-=head1 NAME
+package Bio::ASN1::EntrezGene::Indexer;
+use utf8;
+use strict;
+use warnings;
+use Carp qw(carp croak);
+use Bio::ASN1::EntrezGene;
+use Bio::Index::AbstractSeq;
+use parent qw(Bio::Index::AbstractSeq);
 
-Bio::ASN1::EntrezGene::Indexer - Indexes NCBI Entrez Gene files.
+# ABSTRACT: Indexes NCBI Sequence files.
+# AUTHOR:   Dr. Mingyi Liu <mingyiliu@gmail.com>
+# OWNER:    2005 Mingyi Liu
+# OWNER:    2005 GPC Biotech AG
+# OWNER:    2005 Altana Research Institute
+# LICENSE:  Perl_5
 
 =head1 SYNOPSIS
 
@@ -9,7 +21,7 @@ Bio::ASN1::EntrezGene::Indexer - Indexes NCBI Entrez Gene files.
   # creating & using the index is just a few lines
   my $inx = Bio::ASN1::EntrezGene::Indexer->new(
     -filename => 'entrezgene.idx',
-    -write_flag => 'WRITE'); # needed for make_index call, but if opening 
+    -write_flag => 'WRITE'); # needed for make_index call, but if opening
                              # existing index file, don't set write flag!
   $inx->make_index('Homo_sapiens', 'Mus_musculus', 'Rattus_norvegicus');
   my $seq = $inx->fetch(10); # Bio::Seq obj for Entrez Gene #10
@@ -49,57 +61,40 @@ For details on various parsers I generated for Entrez Gene, example scripts that
 uses/benchmarks the modules, please see L<http://sourceforge.net/projects/egparser/>.
 Those other parsers etc. are included in V1.05 download.
 
-=head1 AUTHOR
-
-Dr. Mingyi Liu <mingyiliu@gmail.com>
-
-=head1 COPYRIGHT
-
-The Bio::ASN1::EntrezGene module and its related modules and scripts
-are copyright (c) 2005 Mingyi Liu, GPC Biotech AG and Altana Research
-Institute. All rights reserved. I created these modules when working
-on a collaboration project between these two companies. Therefore a
-special thanks for the two companies to allow the release of the code
-into public domain.
-
-You may use and distribute them under the terms of the Perl itself or
-GPL (L<http://www.gnu.org/copyleft/gpl.html>).
-
 =head1 CITATION
 
-Liu, M and Grigoriev, A (2005) "Fast Parsers for Entrez Gene" 
-Bioinformatics. In press
+Liu, Mingyi, and Andrei Grigoriev. "Fast parsers for Entrez Gene."
+Bioinformatics 21, no. 14 (2005): 3189-3190.
 
 =head1 OPERATION SYSTEMS SUPPORTED
 
 Any OS that Perl & Bioperl run on.
 
-=head1 METHODS
-
 =cut
 
-package Bio::ASN1::EntrezGene::Indexer;
+=internal _version
 
-use strict;
-use Carp qw(carp croak);
-use vars qw ($VERSION @ISA);
-use Bio::ASN1::EntrezGene;
-use Bio::Index::AbstractSeq;
-
-@ISA = qw(Bio::Index::AbstractSeq);
-$VERSION = '1.09';
+=cut
 
 sub _version
 {
   return $VERSION;
 }
 
+=internal _type_stamp
+
+=cut
+
 sub _type_stamp
 {
   return '__EntrezGene_ASN1__';
 }
 
-sub _index_file 
+=internal _index_file
+
+=cut
+
+sub _index_file
 {
   my($self, $file, $idx) = @_;
   my $position;
@@ -115,23 +110,27 @@ sub _index_file
   return 1;
 }
 
+=internal _file_format
+
+=cut
+
 sub _file_format
 {
   return 'entrezgene';
 }
 
-=head2 fetch
+=method fetch
 
   Parameters: $geneid - id for the Entrez Gene record to be retrieved
   Example:    my $hash = $indexer->fetch(10); # get Entrez Gene #10
   Function:   fetch the data for the given Entrez Gene id.
   Returns:    A Bio::Seq object produced by Bio::SeqIO::entrezgene
-  Notes:      One needs to have Bio::SeqIO::entrezgene installed before 
+  Notes:      One needs to have Bio::SeqIO::entrezgene installed before
                 calling this function!
 
 =cut
 
-=head2 fetch_hash
+=method fetch_hash
 
   Parameters: $geneid - id for the Entrez Gene record to be retrieved
   Example:    my $hash = $indexer->fetch_hash(10); # get Entrez Gene #10
@@ -155,7 +154,7 @@ sub fetch_hash
   }
 }
 
-=head2 _file_handle
+=internal _file_handle
 
   Title   : _file_handle
   Usage   : $fh = $index->_file_handle( INT )
@@ -174,17 +173,17 @@ sub fetch_hash
 =cut
 
 sub _file_handle {
-	my( $self, $i ) = @_;
+  my( $self, $i ) = @_;
 
-	unless ($self->{'_filehandle'}[$i]) {
-		my @rec = $self->unpack_record($self->db->{"__FILE_$i"})
-		  or $self->throw("Can't get filename for index : $i");
-		my $file = $rec[0];
-		local *FH;
-		open *FH, $file or $self->throw("Can't read file '$file' : $!");
-		$self->{'_filehandle'}[$i] = *FH; # Cache filehandle
-	}
-	return $self->{'_filehandle'}[$i];
+  unless ($self->{'_filehandle'}[$i]) {
+    my @rec = $self->unpack_record($self->db->{"__FILE_$i"})
+      or $self->throw("Can't get filename for index : $i");
+    my $file = $rec[0];
+    local *FH;
+    open *FH, $file or $self->throw("Can't read file '$file' : $!");
+    $self->{'_filehandle'}[$i] = *FH; # Cache filehandle
+  }
+  return $self->{'_filehandle'}[$i];
 }
 
 1;

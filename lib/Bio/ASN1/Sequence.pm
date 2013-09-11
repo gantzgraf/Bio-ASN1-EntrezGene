@@ -1,6 +1,15 @@
-=head1 NAME
+package Bio::ASN1::Sequence;
+use utf8;
+use strict;
+use warnings;
+use Carp qw(carp croak);
 
-Bio::ASN1::Sequence - Regular expression-based Perl Parser for ASN.1-formatted NCBI Sequences.
+# ABSTRACT: Regular expression-based Perl Parser for ASN.1-formatted NCBI Sequences.
+# AUTHOR:   Dr. Mingyi Liu <mingyiliu@gmail.com>
+# OWNER:    2005 Mingyi Liu
+# OWNER:    2005 GPC Biotech AG
+# OWNER:    2005 Altana Research Institute
+# LICENSE:  Perl_5
 
 =head1 SYNOPSIS
 
@@ -37,7 +46,7 @@ Bio::ASN1::EntrezGene package can be installed & tested as follows:
 =head1 DESCRIPTION
 
 Bio::ASN1::Sequence is a regular expression-based Perl Parser for ASN.1-formatted
-NCBI sequences.  It parses an ASN.1-formatted sequence record and returns a data 
+NCBI sequences.  It parses an ASN.1-formatted sequence record and returns a data
 structure that contains all data items from the sequence record.
 
 The parser will report error & line number if input data does not conform to the
@@ -63,44 +72,18 @@ see the Bio-ASN1-EntrezGene-x.xx/examples directory) shows the usage.
 
 Please check out perldoc for Bio::ASN1::EntrezGene for more info.
 
-=head1 AUTHOR
-
-Dr. Mingyi Liu <mingyiliu@gmail.com>
-
-=head1 COPYRIGHT
-
-The Bio::ASN1::EntrezGene module and its related modules and scripts
-are copyright (c) 2005 Mingyi Liu, GPC Biotech AG and Altana Research
-Institute. All rights reserved. I created these modules when working
-on a collaboration project between these two companies. Therefore a
-special thanks for the two companies to allow the release of the code
-into public domain.
-
-You may use and distribute them under the terms of the Perl itself or
-GPL (L<http://www.gnu.org/copyleft/gpl.html>).
-
 =head1 CITATION
 
-Liu, M and Grigoriev, A (2005) "Fast Parsers for Entrez Gene" 
-Bioinformatics. In press
+Liu, Mingyi, and Andrei Grigoriev. "Fast parsers for Entrez Gene."
+Bioinformatics 21, no. 14 (2005): 3189-3190.
 
 =head1 OPERATION SYSTEMS SUPPORTED
 
 Any OS that Perl runs on.
 
-=head1 METHODS
-
 =cut
 
-package Bio::ASN1::Sequence;
-
-use strict;
-use Carp qw(carp croak);
-use vars qw ($VERSION);
-
-$VERSION = '1.10';
-
-=head2 new
+=method new
 
   Parameters: maxerrstr => 20 (optional) - maximum number of characters after
                 offending element, used by error reporting, default is 20
@@ -112,7 +95,7 @@ $VERSION = '1.10';
   Function:   Instantiate a parser object
   Returns:    Object reference
   Notes:      Setting file or fh will reset line numbers etc. that are used
-                for error reporting purposes, and seeking on file handle would 
+                for error reporting purposes, and seeking on file handle would
                 mess up linenumbers!
 
 =cut
@@ -128,7 +111,7 @@ sub new
   return $self;
 }
 
-=head2 maxerrstr
+=attr maxerrstr
 
   Parameters: $maxerrstr (optional) - maximum number of characters after
                 offending element, used by error reporting, default is 20
@@ -147,11 +130,11 @@ sub maxerrstr
 }
 
 
-=head2 parse
+=method parse
 
   Parameters: $string that contains Sequence record,
               $trimopt (optional) that specifies how the data structure
-                returned should be trimmed. 2 is recommended and 
+                returned should be trimmed. 2 is recommended and
                 default
               $noreset (optional) that species that line number should not
                 be reset
@@ -198,7 +181,7 @@ sub parse
   return $result;
 }
 
-=head2 input_file
+=attr input_file
 
   Parameters: $filename for file that contains Sequence record(s)
   Example:    $parser->input_file($filename);
@@ -225,7 +208,7 @@ sub input_file
   $self->{linenumber} = 0; # reset line number
 }
 
-=head2 next_seq
+=method next_seq
 
   Parameters: $trimopt (optional) that specifies how the data structure
                 returned should be trimmed. option 2 is recommended and
@@ -261,8 +244,13 @@ sub next_seq
   }
 }
 
-# NCBI's Apr 05, 2005 format change forced much usage of lookahead, which would for
-# sure slows parser down.  But can't code efficiently without it.
+=internal _parse
+
+NCBI's Apr 05, 2005 format change forced much usage of lookahead, which would for
+sure slows parser down.  But can't code efficiently without it.
+
+=cut
+
 sub _parse
 {
   my ($self, $flag) = @_;
@@ -401,7 +389,7 @@ sub _parse
 # so now  $hash->{comments}->[0]->[0]->[0]->{source}->[0]->[0]->[0]->{src}->[0]->[0]->{tag}->[0]->{id}
 # becomes $hash->{comments}->[0]->{source}->{src}->{tag}->{id}
 # this may create problem as array might suddenly change to hash depending on whether it
-# has multiple elements or not.  So set $flag to 2 or 0/undef would disallow trimming that 
+# has multiple elements or not.  So set $flag to 2 or 0/undef would disallow trimming that
 # would lead to data type change, thus resulting in data structure like:
 #    'comments' => ARRAY(0x88617e8)
 #       0  HASH(0x889d578)
@@ -416,7 +404,7 @@ sub _parse
 #                            'id' => 5
 # still not the safest, but saves some hassle writing code
 
-=head2 trimdata
+=method trimdata
 
   Parameters: $hashref or $arrayref
               $trimflag (optional, see Notes)
@@ -478,14 +466,14 @@ sub trimdata
   }
 }
 
-=head2 fh
+=method fh
 
   Parameters: $filehandle (optional)
   Example:    trimdata($datahash); # using the default flag
   Function:   getter/setter for file handle
   Returns:    file handle for current file being parsed.
   Notes:      Use with care!
-              Line number report would not be corresponding to file's line 
+              Line number report would not be corresponding to file's line
                 number if seek operation is performed on the file handle!
 
 =cut
@@ -501,7 +489,7 @@ sub fh
   return $self->{fh};
 }
 
-=head2 rawdata
+=method rawdata
 
   Parameters: none
   Example:    my $data = $parser->rawdata();
@@ -509,7 +497,7 @@ sub fh
   Returns:    a string containing the ASN1-formatted sequence record
   Notes:      Must first parse a record then call this function!
               Could be useful in interpreting line number value in error
-                report (if user did a seek on file handle right before parsing 
+                report (if user did a seek on file handle right before parsing
                 call)
 
 =cut
