@@ -219,7 +219,7 @@ sub parse
   Function:   Takes in name of a file containing Entrez Gene records.
               opens the file and stores file handle
   Returns:    none.
-  Notes:      Attemps to open file larger than 2 GB even on Perl that
+  Notes:      Attempts to open file larger than 2 GB even on Perl that
                 does not support 2 GB file (accomplished by calling
                 "cat" and piping output. On OS that does not have "cat"
                 error message will be displayed)
