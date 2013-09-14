@@ -1,0 +1,23 @@
+language: perl
+perl:
+  - "5.18"
+  - "5.16"
+  - "5.14"
+
+env: PERL_CPANM_OPT="--notest --force --skip-satisfied"
+
+install:
+    - "sudo apt-get install libdb-dev 2>&1 | tail -n 4"
+    - "cpanm DB_File XML::Simple LWP::UserAgent | tail -n 1"
+    - "cpanm Bio::Index::AbstractSeq | tail -n 1"
+
+script:
+    - "prove -lr t"
+
+notifications:
+  email: false
+
+# whitelist branches
+branches:
+  only:
+    - master
