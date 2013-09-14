@@ -582,8 +582,9 @@ sub safeassign
 # safely extracts a value, another choice is to simply use
 # eval in-line, if it fails, it fails.  Probably faster, but can't
 # give feedback in-line (always has to add a couple lines dealing with
-# $@ for error reporting), might still be worth it though because 
+# $@ for error reporting), might still be worth it though because
 # of the speed.  User can make his/her own choice here.
+
 sub safeval
 {
   my ($ds, $str) = @_; # data structure and string (we need $ds passed in because we use strict)
