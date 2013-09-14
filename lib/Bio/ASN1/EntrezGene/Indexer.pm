@@ -78,7 +78,7 @@ Any OS that Perl & Bioperl run on.
 
 sub _version
 {
-  return $VERSION;
+    return $Bio::Index::AbstractSeq::VERSION;
 }
 
 =internal _type_stamp
