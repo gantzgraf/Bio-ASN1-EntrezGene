@@ -1,6 +1,8 @@
 Revision history for Bio-ASN1-Entrezgene
 
 {{$NEXT}}
+
+1.70      2013-09-14 14:39:54 America/Chicago
   * Bio::ASN1::EntrezGene is now able to parse EntrezGene-set in which case
     next_seq() will return the next set of sequences with each sequence as
     an element in the array ref instead of an array ref with a single element.
