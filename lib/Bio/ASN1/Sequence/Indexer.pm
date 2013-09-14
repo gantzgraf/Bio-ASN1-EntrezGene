@@ -69,6 +69,8 @@ Any OS that Perl & Bioperl run on.
 
 =cut
 
+# TODO: Should this be deprecated?
+
 sub _version
 {
   return $Bio::Index::AbstractSeq::VERSION;
