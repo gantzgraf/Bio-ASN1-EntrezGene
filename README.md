@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/bioperl/Bio-ASN1-EntrezGene.svg?branch=master)](https://travis-ci.org/bioperl/Bio-ASN1-EntrezGene)
+[![Coverage Status](https://coveralls.io/repos/bioperl/Bio-ASN1-EntrezGene/badge.png?branch=master)](https://coveralls.io/r/bioperl/Bio-ASN1-EntrezGene?branch=master)
+
 Bio-ASN1-Entrezgene
 ===================
 
