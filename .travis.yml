@@ -1,5 +1,6 @@
 language: perl
 perl:
+  - "5.20"
   - "5.18"
   - "5.16"
   - "5.14"
@@ -10,9 +11,16 @@ install:
     - "sudo apt-get install libdb-dev 2>&1 | tail -n 4"
     - "cpanm DB_File XML::Simple LWP::UserAgent | tail -n 1"
     - "cpanm Bio::Index::AbstractSeq | tail -n 1"
+    #Test coverage from Coveralls
+    - cpanm --quiet --notest Devel::Cover::Report::Coveralls
 
 script:
-    - "prove -lr t"
+    #- "prove -lr t"
+    - PERL5OPT=-MDevel::Cover=+ignore,prove,-coverage,all prove -lr t
+    - cover
+
+after_success:
+    - cover -report coveralls
 
 notifications:
   email: false
