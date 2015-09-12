@@ -312,7 +312,7 @@ sub _parse
         elsif($data->{$id}) { $data->{$id} = [$data->{$id}, $value] } # hash value has a second terminal value now!
         else { $data->{$id} = $value } # the first terminal value
       }
-      elsif($self->{input} =~ /\G{/cg)
+      elsif($self->{input} =~ /\G\{/cg)
       {
         $self->{depth}++;
         push(@{$data->{$id}}, $self->_parse());
